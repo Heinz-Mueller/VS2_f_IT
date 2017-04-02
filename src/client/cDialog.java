@@ -21,9 +21,6 @@ public class cDialog
     String dbIP = null;
     int dbPORT = 0;
 
-    String ip = null;
-    int port = 0;
-
     boolean serverConnect = false;
     boolean shutdown = false;
 
@@ -31,7 +28,6 @@ public class cDialog
     UserData userDATA = null;
     RegisterLogin dbLogin;
     StartClient clientTest;
-    //StartClient testClient = new StartClient(args[0],Integer.parseInt(args[1]));
 
     Scanner scan;
 
@@ -137,6 +133,12 @@ public class cDialog
         return true;
     }
 
+    public boolean nachrichtAendern(String nachricht, String nachrichtID)
+    {
+        testClient.setMessage(nachricht, nachrichtID);
+        return true;
+    }
+
 
 
    public static void main(String args[]) {
@@ -169,15 +171,10 @@ public class cDialog
 
        loginInfo = new LoginInformation (userArray.get(userPos).isAdmin,serDaten2);
 
-        //testClient = new StartClient(args[0],Integer.parseInt(args[1]));
        testClient = new StartClient(loginInfo,userArray.get(userPos));
 
-        Login loginFenster = new Login();
-        loginFenster.sichtbar(true);
-
-        //Tafel a = new Tafel();
-        //a.sichtbar(true);
-
+       Login loginFenster = new Login();
+       loginFenster.sichtbar(true);
 
 
         String messagea;
@@ -188,11 +185,10 @@ public class cDialog
 
         cDialog dialog = new cDialog();
 
+
+
         Scanner scanMain = new Scanner(System.in);
 
-
-        //dialog.clientTest=new StartClient(args[0],Integer.parseInt(args[1]));
-        //dialog.clientTest=new StartClient("192.168.178.52",6000);
        dialog.clientTest=new StartClient(loginInfo,userArray.get(userPos));
 
         int i;
@@ -349,33 +345,5 @@ public class cDialog
     }
 
 
-/*    public void gui(String ip, int port)
-    {
-        ArrayList<MessageData> messageListtest = new ArrayList<MessageData>();
-        System.out.println("bitte gib eine richtige Eingabe!\n");
-
-        //testClient = new StartClient(ip, port);
-
-        //Login loginFenster = new Login();
-        //loginFenster.sichtbar(true);
-
-        //Tafel a = new Tafel();
-        //a.sichtbar(true);
-
-        String messagea;
-        String messageID;
-        String bName;
-        MessageData msgData;
-        int loeschuid;
-
-        cDialog dialog = new cDialog();
-
-        Scanner scanMain = new Scanner(System.in);
-
-        System.out.println("Bitte Ip und port eingeben ./StartClient.sh IP POrt");
-        dialog.clientTest=new StartClient(ip, port);
-
-
-    }*/
 
 }

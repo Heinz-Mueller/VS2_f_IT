@@ -1,12 +1,9 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import VS2.*;
-import View_GUI.Login;
-import View_GUI.Tafel;
 import client.*;
 
-public class Dialog
-{
+public class Dialog{
 
 	String benutzterName = null;
 	String passWord = null;
@@ -102,6 +99,7 @@ public class Dialog
 	public static void main(String args[]) {
 		
 		ArrayList<MessageData> messageListtest = new ArrayList<MessageData>();
+
 		//Daten fuer Loginserver zu ersetzten
 		ArrayList<UserData> userArray=new ArrayList<UserData>();
 		
@@ -109,28 +107,18 @@ public class Dialog
 		UserData user2=new UserData(1002,"Patzek","pw",false);
 		UserData user3=new UserData(1005,"Marco","pw",true);
 		UserData user4=new UserData(1002,"Sadri","pw",false);
-		UserData user5=new UserData(1007,"Eugen","pw",true);
 		
 		userArray.add(user1);
 		userArray.add(user2);
 		userArray.add(user3);
 		userArray.add(user4);
-		userArray.add(user5);
 		
 		int userPos=-1;
 		int auswahl=0;
-
-		//GUI-Fenster
-		//Login loginFenster = new Login();
-		//loginFenster.sichtbar(true);
-
-		//Tafel a = new Tafel();
-		//a.sichtbar(true);
 		
 		//server IP und Port
-		ConnectInformationData serDaten1=new ConnectInformationData("192.168.178.52",6000);
-		ConnectInformationData serDaten2=new ConnectInformationData("192.168.0.105",6000);
-		//ConnectInformationData serDaten2=new ConnectInformationData("127.0.0.1",6666);
+		ConnectInformationData serDaten1=new ConnectInformationData("192.168.0.105",6000);
+		ConnectInformationData serDaten2=new ConnectInformationData("10.9.41.177",6000);
 		
 		LoginInformation loginInfo=null;
 			
@@ -206,7 +194,7 @@ public class Dialog
 			
 			scanMain = new Scanner(System.in);
 			auswahl = scanMain.nextInt();
-			System.out.println(auswahl);
+			
 			
 		}while(auswahl<0||auswahl>1);
 		
@@ -227,7 +215,7 @@ public class Dialog
 			System.out.println("\n Was moechten Sie machen?" + "\nBeenden: 0 " + "\nNachricht schreiben: 1"
 					+ "\nNachricht loeschen: 2" + "\nNachricht ersetzen: 3" + "\nNachricht Ausgabe: 4"
 					+ "\nServer wechseln: 5 (automatisch): " + "\nGebe Vater und kinder Infos: 6" + 
-					"\nNachricht wird zum Vater gesendet: 7"+" \nNachricht an Kinder senden: 8 "+"\nGeänderte Nachricht an alle Childs weiter senden 9  -----> ");
+					"\nNachricht wird zum Vater gesendet: 7"+" \nNachricht an Kinder senden: 8 "+"\nGeanderte Nachricht an alle Childs weiter senden 9  -----> ");
 			scanMain = new Scanner(System.in);
 			i = scanMain.nextInt();
 			
@@ -340,7 +328,7 @@ public class Dialog
 				dialog.clientTest.publishOnChilds(messageListtest.get(messageListtest.size()-1));
 				break;
 			case 9:
-				System.out.println("Erstezen an alles CHILDS: entwerder selbst ändern und an alle childs senden oder das geänderte von andere Child an alle Senden  ");
+				System.out.println("Erstezen an alles CHILDS: entwerder selbst andern und an alle childs senden oder das geanderte von andere Child an alle Senden  ");
 				messageListtest = dialog.clientTest.getMessage();
 				for(int y =0; y<messageListtest.size();++y){
 					System.out.println("NR "+y+ " Nachricht "+messageListtest.get(y).text);
@@ -348,8 +336,8 @@ public class Dialog
 				}
 				scanMain = new Scanner(System.in);
 				auswahl = scanMain.nextInt();
-				System.out.println(auswahl);
-				// wenn selbst text geändert dann bitte messageListtest.get(auswahl) und text ändern und fkt aufrufen
+				//System.out.println(auswahl);
+				// wenn selbst text geandert dann bitte messageListtest.get(auswahl) und text andern und fkt aufrufen
 				
 				//messageListtest.get(auswahl).text="test";
 				
@@ -372,3 +360,4 @@ public class Dialog
 		}
 	}
 }
+

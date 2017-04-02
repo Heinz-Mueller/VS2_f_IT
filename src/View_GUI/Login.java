@@ -1,11 +1,13 @@
 package View_GUI;
 
+import VS2.UserData;
 import client.cDialog;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by Fuse on 25.01.2017.
@@ -21,10 +23,9 @@ public class Login extends javax.swing.JFrame
     JLabel m_errorLabel;
 
     public String user;
+    public String pw = null;
 
-    //static String ip = null;
-    //static int port = 0;
-    public String ip = null;
+
     public int port = 0;
 
     public cDialog a;
@@ -38,8 +39,21 @@ public class Login extends javax.swing.JFrame
         erstellen();
     }
 
+
     public void erstellen()
     {
+        //Daten um Loginserver zu ersetzten
+        ArrayList<UserData> userArray=new ArrayList<UserData>();
+
+        UserData user1=new UserData(1001,"Salva","pw",true);
+        UserData user2=new UserData(1005,"Marco","pw",true);
+        UserData user3=new UserData(1002,"Sadri","pw",false);
+
+        userArray.add(user1);
+        userArray.add(user2);
+        userArray.add(user3);
+
+
         //m_viewFrame = new JFrame("Bitte Daten eingeben");
         m_viewFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -76,14 +90,26 @@ public class Login extends javax.swing.JFrame
         m_setButton.addActionListener (new ActionListener(){
             public void actionPerformed (ActionEvent e)
             {
-                //user = userTextFeld.getText();
-                ip = userTextFeld.getText();
-                //port = Integer.parseInt(pwTextFeld.getText());
-                //System.out.println(user);
-                //Controller benachrichtigen, noch nicht umgesetzt
-                //controller.setUser(user);
-                Tafel a = new Tafel(ip);
-                a.sichtbar(true);
+                user = userTextFeld.getText();
+                pw = pwTextFeld.getText().trim();
+
+                System.out.println(user);
+                System.out.println(pw);
+
+                for(int j =0; j< userArray.size(); ++j)
+                {
+                    if((userArray.get(j).userName.equals(user))&&(userArray.get(j).password.equals(pw)))
+                    {
+                        Tafel a = new Tafel(user);
+                        a.sichtbar(true);
+                    }
+                }
+
+
+                //Tafel a = new Tafel(user);
+                //a.sichtbar(true);
+
+
                 //a.gui(ip, port);
                 //Sobald eingeloggt mache das login fenster unsichtbar
                 //m_viewFrame.setVisible(false);

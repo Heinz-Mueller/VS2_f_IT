@@ -25,8 +25,10 @@ public class Bearbeitung extends JDialog
 
     JFrame frame = new JFrame("Bearbeitung");
 
-
     cDialog test = new cDialog();
+
+    //Lade Nachrichten in ArrayListe und dann in die comboBox
+    ArrayList<MessageData> nachrichten = test.ausgabeNachrichten();
 
     public Bearbeitung()
     {
@@ -46,6 +48,15 @@ public class Bearbeitung extends JDialog
 //
 //            }
 //        });
+
+        ändernButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                onAendern();
+            }
+        });
+
     }
 
 
@@ -72,12 +83,11 @@ public class Bearbeitung extends JDialog
 //        userArray.add(user1);
 //        userArray.add(user2);
 
-        //Lade Nachrichten in ArrayListe und dann in die comboBox
-        ArrayList<MessageData> nachrichten = test.ausgabeNachrichten();
+        comboBox1.removeAllItems();
 
         for (int i = 0; i < nachrichten.size(); i++)
         {
-            comboBox1.addItem(nachrichten.get(i).id);
+            comboBox1.addItem(" UserID: " + nachrichten.get(i).uid + "   NachrichtID" + nachrichten.get(i).id);
         }
 
 
@@ -97,6 +107,37 @@ public class Bearbeitung extends JDialog
     private void onAbbrechen()
     {
         frame.dispose();
+    }
+
+    private void onAendern()
+    {
+        String nachricht = nachrichtenArea.getText();
+        String nachrichtID = nachrichten.get( comboBox1.getSelectedIndex() ).id;
+
+        //test.nachrichtAendern(nachricht, nachrichtID);
+
+        if ( !test.nachrichtAendern(nachricht, nachrichtID) )
+        {
+            JOptionPane.showMessageDialog(null, "Nachricht konnte nicht geändert werden!", "Änderung", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+            JOptionPane.showMessageDialog(null, "Nachricht wurde geändert!", "Änderung", JOptionPane.INFORMATION_MESSAGE);
+
+        //Nachrichten neu in Liste laden
+        nachrichten = test.ausgabeNachrichten();
+    }
+
+
+    private void refreshComboBox() //klappt nicht wie geplant
+    {
+        nachrichten = test.ausgabeNachrichten();
+
+        comboBox1.removeAllItems();
+
+        for (int i = 0; i < nachrichten.size(); i++)
+        {
+            comboBox1.addItem(" UserID: " + nachrichten.get(i).uid + "   NachrichtID" + nachrichten.get(i).id);
+        }
     }
 
 }

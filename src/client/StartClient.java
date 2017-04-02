@@ -1,8 +1,8 @@
 package client;
 
-/**
+/*
  *
- * @author imed
+ * @author Salvatore Simonte
  */
 
 import java.util.ArrayList;
@@ -10,7 +10,11 @@ import org.omg.CosNaming.*;
 import org.omg.CORBA.*;
 import VS2.*;
 
+import storageSystem.*;
+import Datenbank.dbInfo.Fkt;
 public class StartClient {
+	// um die DB sagen welche funktion die nachricht nicht senden konnte
+	
 	
 	private ArrayList<String> childsNames=new ArrayList<String>();
 	private int uid = 12345;// TEST UID
@@ -27,6 +31,8 @@ public class StartClient {
 
 	private int portDB=6050; // Bitte den richtigen port eingeben und der muss am besten immer gleich sein
 	private String ipDB="192.168.2.1";
+	private StorageMessages db;
+	checkDB dbsend;
 	
 	private ConnectInformationData mYserver;//Server info IP und port
 	ORB orb;
@@ -35,7 +41,9 @@ public class StartClient {
 	private boolean isAdmin=false;// admin rechte 
 
 	
-
+	/**
+	 * Verbindet mit den uebergebenen Infos mit der DB
+	 */
 	private boolean connectToServer() {
 		try {
 			
@@ -50,45 +58,24 @@ public class StartClient {
 			// part of the Interoperable naming Service.
 			NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
 			mbImpl = MessageboardServerInterfaceHelper.narrow(ncRef.resolve_str(this.METHOD));
-			
+			mbImpl._non_existent();//testen ob Server erreichbar ist
 			return true;
 			
 		} catch (Exception e) {
-			System.out.println("ERROR (falsche Daten): " +e);
-//			System.exit(0);
+			System.out.println("ERROR Server nicht Erreichbar ");
+			System.exit(0);
 			return false;
 		}
 	}
-	
-	
-	
-	
-	/*
-	 * 
-	 * TODO warte auf DB dann loeschen
-	 */
-	public StartClient(String ip, int port,String uName, String pWord) {
-			
-			this.uName=uName;
-			this.pWord=pWord;
 		
-			this.userData = new UserData(this.uid, this.uName, this.pWord,this.isAdmin);
-			
-			this.messageList = new ArrayList<MessageData>();
-			this.childList =new ArrayList<String>();
-			
-			this.mYserver=new ConnectInformationData(ip,port);
-			this.loginInfo=new LoginInformation(this.isAdmin,this.mYserver);
-			this.url = new String[] { "-ORBInitialPort", Integer.toString(port), "-ORBInitialHost", ip };
-			//this.url = new String[] { "-ORBInitialPort", Integer.toString(this.loginInfo.server.port), "-ORBInitialHost", this.loginInfo.server.ip };
-			if(!this.connectToServer()){
-			 System.out.println("Vllt falsche daten eingegeben");
-			 System.exit(0);	
-			}
-	}
-
+	/**
+	 * Starten der Klasse informationen Verarbeitet um mit Corba server zu verbinden
+	 * @param loginInfo
+	 * @param userData
+	 */
 	public StartClient(LoginInformation loginInfo,UserData userData) {
-		// TODO Auto-generated constructor stub
+		this.db=new StorageMessages();
+		
 		this.messageList = new ArrayList<MessageData>();
 		this.childList =new ArrayList<String>();
 		
@@ -97,15 +84,23 @@ public class StartClient {
 				
 		this.url = new String[] { "-ORBInitialPort", Integer.toString(this.loginInfo.server.port), "-ORBInitialHost",this. loginInfo.server.ip };
 		this.connectToServer();
+		this.dbsend= new checkDB(this,this.db,loginInfo.server.ip);
+		new Thread(dbsend).start();
+		
 	}
-
+	/**
+	 * port ersetzten
+	 * @param ip
+	 * @param port
+	 */
 	public void setDBipUport(String ip,int port){
 		this.ipDB=ip;
 		this.portDB=port;
 	}
 
-	/*
+	/**
 	 * abrufen von den KindsServer Name
+	 * @return ArrayList<String>
 	 */
 	public ArrayList<String> getChildNames() {
 		childList.clear();
@@ -117,20 +112,27 @@ public class StartClient {
 		}
 		return childList;	
 	}
-	/*
-	 * GIbt die einzelnen  IP des Kind
+	/**
+	 * Gibt die einzelnen  IP des Kind
+	 * @param childname
+	 * @return
 	 */
 	public String getChildIP(String childname){
 		return this.mbImpl.connectToChild(childname).ip;
 	}
 	
+	/**
+	 * GIbt die einzelnen Portdes Kind
+	 * @param childname
+	 * @return
+	 */
 	public int getChildPort(String childname){
 		return this.mbImpl.connectToChild(childname).port;
 	}
 	
-	/*
+	/**
 	 * Array von alle Nachrichten
-	 * 
+	 * @return ArrayList<MessageData>
 	 */
 	public ArrayList<MessageData> getMessage() {
 		messageList.clear();
@@ -142,78 +144,141 @@ public class StartClient {
 		}
 		return messageList;
 	}
+	
 
-	/*
+	/**
 	 * ersetzt die Nachricht
-	 */
-	public boolean setMessage(String newmessage, String messageID) {
-		
-		return this.mbImpl.setMessage(newmessage, messageID, this.userData);
-	}
-	
-		
-	
-
-	/*
-	 * loescht die Nachricht
-	 * 
-	 * @param uid
-	 * 
+	 * @param newmessage
 	 * @param messageID
+	 * @return
 	 */
-	public boolean deleteMessage( String messageID) {
-
-		return this.mbImpl.deleteMessage(messageID, this.userData);
+	public boolean setMessagefuerThread(String newmessage, String messageID) {	
+		try{
+			this.mbImpl.setMessage(newmessage, messageID, this.userData);
+				return true;		
+		}catch(Exception e){
+			return false;
+		}
 	}
-
-	/*
+	public boolean setMessage(String newmessage, String messageID) {	
+		try{
+			if(this.mbImpl.setMessage(newmessage, messageID, this.userData)){
+				return true;
+		}else{
+			this.db.writeEintrag(messageID,this.userData.userID,this.userData.userName,this.userData.password, this.loginInfo.server.ip, this.userData.isAdmin, false,newmessage ,Fkt.ERSETZTEN);
+			
+			return false;
+		}
+		}catch(Exception e){
+			this.db.writeEintrag(messageID,this.userData.userID,this.userData.userName,this.userData.password, this.loginInfo.server.ip, this.userData.isAdmin, false, newmessage ,Fkt.ERSETZTEN);
+			
+			System.out.println("Server nicht Erreichbar ");
+			System.exit(0);
+			return false;
+		}
+	}
+	
+	/**
+	 * loescht die Nachricht
+	 * @param messageID
+	 * @return boolean
+	 */
+	public boolean deleteMessagefuerThread( String messageID){
+		try{
+			this.mbImpl.deleteMessage(messageID, this.userData);
+				return true;
+		
+		}catch(Exception e){
+			return false;
+		}
+	}
+	public boolean deleteMessage( String messageID) {
+		try{
+			if(this.mbImpl.deleteMessage(messageID, this.userData)){
+				return true;
+		}else{
+			this.db.writeEintrag(messageID,this.userData.userID,this.userData.userName,this.userData.password, this.loginInfo.server.ip, this.userData.isAdmin, false,"xxx" ,Fkt.LOESCHEN);
+			
+			return false;
+		}
+		}catch(Exception e){
+			this.db.writeEintrag(messageID,this.userData.userID,this.userData.userName,this.userData.password, this.loginInfo.server.ip, this.userData.isAdmin, false, "xxx" ,Fkt.LOESCHEN);
+			
+			System.out.println("Server nicht Erreichbar ");
+			System.exit(0);
+			return false;
+		}
+	}
+	/**
 	 * schreib eine neue Nachricht
 	 * @param message
+	 * @return boolean
 	 */
-	public boolean schreibeMessage(String message)
-	{
-		return mbImpl.createNewMessage(message, this.userData);
+	public boolean schreibeMessageFuerThread(String message) {
+			return mbImpl.createNewMessage(message, this.userData);	
 	}
 
-	/*
+	public boolean schreibeMessage(String message) {
+		try{
+		if(mbImpl.createNewMessage(message, this.userData)){
+			return true;
+		}else{
+			this.db.writeEintrag("xxx",this.userData.userID,this.userData.userName,this.userData.password, this.loginInfo.server.ip, this.userData.isAdmin, false, message,Fkt.SCHREIBEN);
+			
+			return false;
+		}
+		}catch(Exception e){
+			this.db.writeEintrag("xxx",this.userData.userID,this.userData.userName,this.userData.password, this.loginInfo.server.ip, this.userData.isAdmin, false, message,Fkt.SCHREIBEN);
+			
+			System.out.println("ERROR Server nicht Erreichbar ");
+			System.exit(0);
+			return false;
+		}
+	}
+
+	/**
 	 * gibt die direkt naechste Message
-	 * 
+	 * @return MessageData
 	 */
 	public MessageData getnextMessage() {
 		return this.mbImpl.getPreviousMessage();
 	}
 
-	/*
-	 * gibt die vorh�rige Message
+	/**
+	 * gibt die vorhaerige Message
+	 * @return MessageData
 	 */
 	public MessageData getPreviousMessage() {
 		return this.mbImpl.getPreviousMessage();
 	}
 
-	/*
+	/**
 	 * fragt den Server die FatherIP
+	 * @return FahterIP
 	 */
 	public String getFatherIP() {
 		return mbImpl.connectToFather(this.userData).ip;
 	}
-
+	/**
+	 * fragt den Server den FatherPort
+	 * @return FahterPort
+	 */
 	public int getFatherPort() {
 		return mbImpl.connectToFather(this.userData).port;
 	}
 	
-	/*
+	/**
 	 * MessageBoard hat fatherId-> abruf xml datei auf fathername
-	 * 
+	 * @return name
 	 */
 	public String getFatherName() {
 		return this.mbImpl.getFatherName();
 	}
 
-	/*
+	/**
 	 * Sendet Nachircht an alle Kinder
-	 *@ param MessageData
-	 *
-	 *@param return boolean
+	 * @param tempMData
+	 * @return boolean
 	 */
 	public boolean publishOnChilds(MessageData tempMData){
 		this.childsNames=this.getChildNames();
@@ -229,11 +294,10 @@ public class StartClient {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Sendet Nachircht an Vater
-	 *@ param MessageData
-	 *
-	 *@param return boolean 
+	 * @param tempMData
+	 * @return boolean
 	 */
 	public boolean  publishOnFather(MessageData tempMData) {
 	
@@ -245,6 +309,9 @@ public class StartClient {
 		
 		
 	}
+	/**
+	 * Die Nachricht die geaendert wurde an alle childs Senden nur admin. wird vom server gepruft
+	 */
 	public boolean setMessageChild(MessageData tempMData) {
 		this.childsNames=this.getChildNames();
 		if(childsNames!=null){
@@ -256,17 +323,17 @@ public class StartClient {
 		}else{
 			return false;
 		}
-		return true;
-		
+		return true;	
 	}
 		
-		
-	/*
-	 * Funktion um die Nachrichten an Kinder zu senden
-	 * @param MessageData tempData
+	/**
+	 *  Funktion um die Nachrichten an Kinder zu senden
+	 * @param welchefkt
+	 * @param toIP
+	 * @param toPort
+	 * @param tempMData
+	 * @return
 	 */
-	
-	
 	private boolean sendChildsorFATHER(String welchefkt,String toIP, int toPort, MessageData tempMData) {
 
 		if (toPort != 0) {
@@ -300,22 +367,24 @@ public class StartClient {
 		return false;
 
 	}
-	/*
+	/**
 	 * username abfragen
+	 * @return
 	 */
 	public String getUser() {
 		return this.userData.userName;
 	}
 
-	/*
+	/**
 	 * userID abfragen
+	 * @return
 	 */
 	public int getUserID() {
 		return this.uid;
 	}
 
-	/*
-	 * disconnect from server
+	/**
+	 *  disconnect from server
 	 */
 	public void disconnectToServer() {
 		orb.destroy();
