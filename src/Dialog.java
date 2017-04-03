@@ -119,6 +119,7 @@ public class Dialog{
 		//server IP und Port
 		ConnectInformationData serDaten1=new ConnectInformationData("192.168.0.105",6000);
 		ConnectInformationData serDaten2=new ConnectInformationData("10.9.41.177",6000);
+
 		
 		LoginInformation loginInfo=null;
 			
@@ -199,14 +200,14 @@ public class Dialog{
 		}while(auswahl<0||auswahl>1);
 		
 		if(auswahl==0){
-			loginInfo=new LoginInformation (userArray.get(userPos).isAdmin,serDaten1);
+			loginInfo=new LoginInformation (userArray.get(userPos).isAdmin, serDaten1);
 		}else if(auswahl ==1){
-			loginInfo=new LoginInformation (userArray.get(userPos).isAdmin,serDaten2);
+			loginInfo=new LoginInformation (userArray.get(userPos).isAdmin, serDaten2);
 		}
 		
 		System.out.println("Sie werden mit dem Server "+loginInfo.server.ip+" mit Port "+loginInfo.server.port+" verbunden!\n");
 		
-		dialog.clientTest=new StartClient(loginInfo,userArray.get(userPos));
+		dialog.clientTest=new StartClient(loginInfo, userArray.get(userPos));
 		
 		int i;
 		boolean beenden = false;

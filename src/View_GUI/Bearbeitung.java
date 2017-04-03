@@ -64,7 +64,6 @@ public class Bearbeitung extends JDialog
     {
         nachrichtenLaden();
 
-
         frame.setContentPane(bearbeitungPanel);
         frame.setLocation(800, 0);
         frame.pack();

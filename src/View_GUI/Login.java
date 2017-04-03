@@ -17,44 +17,28 @@ public class Login extends javax.swing.JFrame
     JFrame m_viewFrame = new JFrame("Bitte Daten eingeben");
     JMenuBar m_menuBar;
     JTextField userTextFeld;
-    //JPasswordField pwTextFeld;
-    JTextField pwTextFeld;
+    JPasswordField pwTextFeld;
+    //JTextField pwTextFeld;
     JButton m_setButton;
     JLabel m_errorLabel;
 
     public String user;
-    public String pw = null;
+    public String pw;
 
 
-    public int port = 0;
+    //public int port = 0;
 
-    public cDialog a;
+    public cDialog dialog = new cDialog();
 
-
-    // Create the class for the Controller
-    //private LoginController controller = new LoginController();
 
     public Login ()
     {
         erstellen();
     }
 
-
+    /* Login-Fenster erstellen */
     public void erstellen()
     {
-        //Daten um Loginserver zu ersetzten
-        ArrayList<UserData> userArray=new ArrayList<UserData>();
-
-        UserData user1=new UserData(1001,"Salva","pw",true);
-        UserData user2=new UserData(1005,"Marco","pw",true);
-        UserData user3=new UserData(1002,"Sadri","pw",false);
-
-        userArray.add(user1);
-        userArray.add(user2);
-        userArray.add(user3);
-
-
-        //m_viewFrame = new JFrame("Bitte Daten eingeben");
         m_viewFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         m_menuBar = new JMenuBar();
@@ -75,8 +59,8 @@ public class Login extends javax.swing.JFrame
         b2.add(userTextFeld);
 
         b1.add(new Label("Password: ", Label.RIGHT));
-        //pwTextFeld = new JPasswordField();
-        pwTextFeld = new JTextField();
+        pwTextFeld = new JPasswordField();
+        //pwTextFeld = new JTextField();
         pwTextFeld.setHorizontalAlignment(JTextField.CENTER);
         b2.add(pwTextFeld);
 
@@ -86,38 +70,35 @@ public class Login extends javax.swing.JFrame
         northPanel.add(m_errorLabel, BorderLayout.SOUTH);
 
 
+        //String localhost = dialog.serDaten_localhost.ip;
+        //System.out.println(localhost);
+        final JComboBox verfServer = new JComboBox();
+        verfServer.addItem("IP: " + dialog.serDaten_localhost.ip + " Port: " + dialog.serDaten_localhost.port);
+        verfServer.addItem("IP: " + dialog.serDaten1.ip + " Port: " + dialog.serDaten1.port);
+        verfServer.addItem("IP: " + dialog.serDaten2.ip + " Port: " + dialog.serDaten2.port);
+        Container contentPane = m_viewFrame.getContentPane();
+        northPanel.add(verfServer, BorderLayout.SOUTH);
+
+
         m_setButton = new JButton ("Login");
+        //Aktionen für Login-Button
         m_setButton.addActionListener (new ActionListener(){
             public void actionPerformed (ActionEvent e)
             {
                 user = userTextFeld.getText();
                 pw = pwTextFeld.getText().trim();
 
-                System.out.println(user);
-                System.out.println(pw);
-
-                for(int j =0; j< userArray.size(); ++j)
+                if( dialog.userCheck(user, pw) )
                 {
-                    if((userArray.get(j).userName.equals(user))&&(userArray.get(j).password.equals(pw)))
-                    {
-                        Tafel a = new Tafel(user);
-                        a.sichtbar(true);
-                    }
+
+                    dialog.startClient(user, verfServer.getSelectedIndex() );
+
+                    Tafel a = new Tafel(user);
+                    a.sichtbar(true);
+
+                    //Sobald eingeloggt mache das Login fenster unsichtbar
+                    m_viewFrame.setVisible(false);
                 }
-
-
-                //Tafel a = new Tafel(user);
-                //a.sichtbar(true);
-
-
-                //a.gui(ip, port);
-                //Sobald eingeloggt mache das login fenster unsichtbar
-                //m_viewFrame.setVisible(false);
-
-                //Tafel b = new Tafel(ip);
-                //b.sichtbar(true);
-
-
             }
         });
 
@@ -131,10 +112,8 @@ public class Login extends javax.swing.JFrame
                 (d.height - m_viewFrame.getSize().height) / 2);
 
 
-        m_viewFrame.setSize(400, 150);
+        m_viewFrame.setSize(400, 170);
 
-        // JFrame anzeigen
-        //m_viewFrame.setVisible(true);
     }
 
     public void sichtbar(boolean a)

@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class cDialog
 {
     private static StartClient testClient;
+
     String benutzterName = null;
     String passWord = null;
     String dbIP = null;
@@ -30,6 +31,17 @@ public class cDialog
     StartClient clientTest;
 
     Scanner scan;
+
+    //Array-Liste für die User
+    public static ArrayList<UserData> userArray=new ArrayList<UserData>();
+
+    //Server und Port fest eingetragen
+    public static ConnectInformationData serDaten_localhost = new ConnectInformationData("127.0.0.1",6000);
+    public static ConnectInformationData serDaten1 = new ConnectInformationData("192.168.178.52",6000);
+    public static ConnectInformationData serDaten2 = new ConnectInformationData("192.168.0.105",6000);
+
+
+    static int userNr = 0;
 
     private boolean connDatenB() {
         // Login Daten eigben
@@ -139,19 +151,49 @@ public class cDialog
         return true;
     }
 
+    public boolean userCheck(String user, String pw)
+    {
+        for(int j = 0; j< userArray.size(); ++j)
+        {
+            if((userArray.get(j).userName.equals(user))&&(userArray.get(j).password.equals(pw)))
+            {
+                userNr = j;
+                return true;
+            }
+        }
+        return false;
+    }
 
 
-   public static void main(String args[]) {
+    public void startClient(String user, int serverNr)
+    {
+        LoginInformation loginInfos = null;
+
+        if (serverNr == 0){
+            loginInfos = new LoginInformation (userArray.get(userNr).isAdmin, serDaten_localhost);
+        }else if(serverNr == 1){
+            loginInfos = new LoginInformation (userArray.get(userNr).isAdmin, serDaten1);
+        }else if(serverNr == 2){
+            loginInfos = new LoginInformation (userArray.get(userNr).isAdmin, serDaten2);
+        }
+
+        testClient = new StartClient(loginInfos, userArray.get(userNr));
+    }
+
+
+   public static void main(String args[])
+   {
         ArrayList<MessageData> messageListtest = new ArrayList<MessageData>();
 
        //Daten fuer Loginserver zu ersetzten
-       ArrayList<UserData> userArray=new ArrayList<UserData>();
+        //ArrayList<UserData> userArray=new ArrayList<UserData>();
 
-       UserData user1=new UserData(1001,"Salva","pw",true);
-       UserData user2=new UserData(1002,"Patzek","pw",false);
-       UserData user3=new UserData(1005,"Marco","pw",true);
-       UserData user4=new UserData(1002,"Sadri","pw",false);
-       UserData user5=new UserData(1007,"Eugen","pw",true);
+       //User anlegen und in Array Liste packen
+       UserData user1 = new UserData(1001,"Salva","pw",true);
+       UserData user2 = new UserData(1002,"Patzek","pw",false);
+       UserData user3 = new UserData(1005,"Marco","pw",true);
+       UserData user4 = new UserData(1002,"Sadri","pw",false);
+       UserData user5 = new UserData(1007,"Eugen","pw",true);
 
        userArray.add(user1);
        userArray.add(user2);
@@ -159,37 +201,38 @@ public class cDialog
        userArray.add(user4);
        userArray.add(user5);
 
-       //server IP und Port
-       ConnectInformationData serDaten1=new ConnectInformationData("192.168.178.52",6000);
-       ConnectInformationData serDaten2=new ConnectInformationData("192.168.0.105",6000);
-       //ConnectInformationData serDaten2=new ConnectInformationData("127.0.0.1",6666);
-
-       int userPos = 0; //User Nr
-       int auswahl=0;
-
-       LoginInformation loginInfo=null;
-
-       loginInfo = new LoginInformation (userArray.get(userPos).isAdmin,serDaten2);
-
-       testClient = new StartClient(loginInfo,userArray.get(userPos));
-
+       //Login-Fenster anlegen
        Login loginFenster = new Login();
        loginFenster.sichtbar(true);
 
 
+       //testClient = new StartClient(loginInfo, userArray.get(userNr));
+
+
+       cDialog dialog = new cDialog();
+
+
+
+       /*---------------Sachen für shell -----------------*/
         String messagea;
         String messageID;
         String bName;
         MessageData msgData;
         int loeschuid;
 
-        cDialog dialog = new cDialog();
 
 
+       int userPos = 0; //User Nr
+       int auswahl = 0;
+
+
+       LoginInformation loginInfo = null;
+
+       loginInfo = new LoginInformation (userArray.get(userPos).isAdmin, serDaten_localhost);
 
         Scanner scanMain = new Scanner(System.in);
 
-       dialog.clientTest=new StartClient(loginInfo,userArray.get(userPos));
+       dialog.clientTest = new StartClient(loginInfo,userArray.get(userPos));
 
         int i;
         boolean beenden = false;
@@ -323,8 +366,6 @@ public class cDialog
                    System.out.println(auswahl);
                    // wenn selbst text geändert dann bitte messageListtest.get(auswahl) und text ändern und fkt aufrufen
 
-                   //messageListtest.get(auswahl).text="test";
-
 
                    if (!dialog.clientTest.setMessageChild(messageListtest.get(auswahl))) {
                        System.out.println("UID: " + messageListtest.get(auswahl).uid + " und/oder " + "Message: " + messageListtest.get(auswahl).text );
@@ -343,7 +384,6 @@ public class cDialog
            }
        }
     }
-
 
 
 }
