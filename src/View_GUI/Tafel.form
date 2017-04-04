@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="View_GUI.Tafel">
-  <grid id="27dc6" binding="tafelPanel" layout-manager="GridLayoutManager" row-count="5" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="tafelPanel" layout-manager="GridLayoutManager" row-count="6" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
       <xy x="20" y="20" width="998" height="493"/>
@@ -105,10 +105,11 @@
         <properties>
           <borderPainted value="false"/>
           <contentAreaFilled value="false"/>
+          <focusPainted value="false"/>
           <icon value="Icons/messageTest.png"/>
           <rolloverIcon value="Icons/message Roll.png"/>
           <text value=""/>
-          <toolTipText value="Send"/>
+          <toolTipText value="Nachricht senden"/>
         </properties>
       </component>
       <component id="63f63" class="javax.swing.JButton" binding="refreshButton" default-binding="true">
@@ -120,10 +121,11 @@
         <properties>
           <borderPainted value="false"/>
           <contentAreaFilled value="false"/>
+          <focusPainted value="false"/>
           <icon value="Icons/reload.png"/>
           <rolloverIcon value="Icons/reloadRoll.png"/>
           <text value=""/>
-          <toolTipText value="Refresh"/>
+          <toolTipText value="Aktualisieren"/>
         </properties>
       </component>
       <component id="9145" class="javax.swing.JButton" binding="messageBearbeitenButton" default-binding="true">
@@ -136,10 +138,11 @@
         <properties>
           <borderPainted value="false"/>
           <contentAreaFilled value="false"/>
+          <focusPainted value="false"/>
           <icon value="Icons/edit.png"/>
           <rolloverIcon value="Icons/editRoll2.png"/>
           <text value=""/>
-          <toolTipText value="Edit"/>
+          <toolTipText value="Nachricht bearbeiten"/>
         </properties>
       </component>
       <component id="3d8e5" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
@@ -152,12 +155,23 @@
           <background color="-12095557"/>
           <borderPainted value="false"/>
           <contentAreaFilled value="false"/>
+          <focusPainted value="false"/>
           <font name="Corbel" style="3"/>
           <foreground color="-1"/>
           <icon value="Icons/garbage.png"/>
           <rolloverIcon value="Icons/garbageRoll2.png"/>
           <text value=""/>
-          <toolTipText value="Delete"/>
+          <toolTipText value="Nachricht löschen"/>
+        </properties>
+      </component>
+      <component id="dc010" class="javax.swing.JLabel" binding="info">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-1298944"/>
+          <requestFocusEnabled value="true"/>
+          <text value=""/>
         </properties>
       </component>
     </children>

@@ -22,23 +22,11 @@
         <properties>
           <borderPainted value="false"/>
           <contentAreaFilled value="false"/>
+          <focusPainted value="false"/>
           <icon value="Icons/edit.png"/>
           <rolloverIcon value="Icons/editRoll2.png"/>
           <text value=""/>
-          <toolTipText value="Edit"/>
-        </properties>
-      </component>
-      <component id="1dcc4" class="javax.swing.JButton" binding="löschenButton" default-binding="true">
-        <constraints>
-          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <borderPainted value="false"/>
-          <contentAreaFilled value="false"/>
-          <icon value="Icons/garbage.png"/>
-          <rolloverIcon value="Icons/garbageRoll2.png"/>
-          <text value=""/>
-          <toolTipText value="Delete"/>
+          <toolTipText value="Nachricht bearbeiten"/>
         </properties>
       </component>
       <component id="294c7" class="javax.swing.JButton" binding="abbrechenButton" default-binding="true">
@@ -48,10 +36,11 @@
         <properties>
           <borderPainted value="false"/>
           <contentAreaFilled value="false"/>
+          <focusPainted value="false"/>
           <icon value="Icons/cancel.png"/>
           <rolloverIcon value="Icons/cancelRoll.png"/>
           <text value=""/>
-          <toolTipText value="Cancel"/>
+          <toolTipText value="Abbrechen"/>
         </properties>
       </component>
       <scrollpane id="99fd6">

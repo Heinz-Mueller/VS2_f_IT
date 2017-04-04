@@ -19,7 +19,6 @@ public class Bearbeitung extends JDialog
 
     private JComboBox comboBox1;
     private JButton ändernButton;
-    private JButton löschenButton;
     private JButton abbrechenButton;
     private JPanel bearbeitungPanel;
     private JTextArea nachrichtenArea;
@@ -98,9 +97,6 @@ public class Bearbeitung extends JDialog
             public void actionPerformed(ActionEvent actionEvent) {
                 nachrichtenArea.setText(null);
                 nachrichtenArea.append(nachrichten.get(comboBox1.getSelectedIndex()).text );
-                //nachrichtenArea.append("Selected: " + comboBox1.getSelectedItem());
-                //nachrichtenArea.append(", Position: " + comboBox1.getSelectedIndex());
-                //nachrichtenArea.append(System.getProperty("line.separator"));
             }
         };
         comboBox1.addActionListener(actionListener);
@@ -117,8 +113,6 @@ public class Bearbeitung extends JDialog
     {
         String nachricht = nachrichtenArea.getText();
         String nachrichtID = nachrichten.get( comboBox1.getSelectedIndex() ).id;
-
-        //test.nachrichtAendern(nachricht, nachrichtID);
 
         if ( !test.nachrichtAendern(nachricht, nachrichtID) )
         {

@@ -29,6 +29,7 @@ public class Tafel extends JDialog
     private JLabel Nachrichten;
     private JLabel Children;
     private JButton deleteButton;
+    private JLabel info;
 
     //private cDialog a;
 
@@ -81,6 +82,7 @@ public class Tafel extends JDialog
 
     private void onDelete()
     {
+        info.setText("");
         JFrame eingabe = new JFrame();
         String messageID = JOptionPane.showInputDialog(eingabe, "Bitte Nachricht-ID eingeben.", "Delete", JOptionPane.PLAIN_MESSAGE);
 
@@ -91,8 +93,10 @@ public class Tafel extends JDialog
             {
                 JOptionPane.showMessageDialog(null, "Nachricht konnte nicht geloescht werden!", "Delete", JOptionPane.INFORMATION_MESSAGE);
             }
-            else
+            else{
                 JOptionPane.showMessageDialog(null, "Nachricht geloescht!", "Delete", JOptionPane.INFORMATION_MESSAGE);
+                onRefresh();
+            }
         }
 
     }
@@ -106,21 +110,29 @@ public class Tafel extends JDialog
                     + " UID:  " + nachrichten.get(y).uid + " ID:  " + nachrichten.get(y).id);
             nachrichtenArea.append("\n");
         }
-        nachrichtenArea.append("\n");
+        info.setText("");
     }
 
     public void onSender()
     {
         String nachricht = nachrichtTexteingabe.getText();
-        test.nachrichtSchreiben(nachricht);
-        nachrichtTexteingabe.setText("");
-        onRefresh();
+        nachricht.trim();
+        if (nachricht.equals(""))
+        {
+            info.setText("Bitte eine Nachricht eingeben!");
+        }else{
+            test.nachrichtSchreiben(nachricht);
+            nachrichtTexteingabe.setText("");
+            onRefresh();
+            info.setText("");
+        }
     }
 
 
     private void onBearbeiten()
     {
         Bearbeitung bearbeitung = new Bearbeitung();
+        info.setText("");
         //frame.setEnabled(false);
     }
 
