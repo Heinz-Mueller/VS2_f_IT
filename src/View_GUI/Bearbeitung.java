@@ -7,6 +7,7 @@ import client.cDialog;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 
 /**
@@ -62,6 +63,7 @@ public class Bearbeitung extends JDialog
     public void erstellen()
     {
         nachrichtenLaden();
+
 
         frame.setContentPane(bearbeitungPanel);
         frame.setLocation(800, 0);

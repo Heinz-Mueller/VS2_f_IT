@@ -5,7 +5,9 @@
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-12961222"/>
+    </properties>
     <border type="none"/>
     <children>
       <vspacer id="56426">
@@ -15,26 +17,41 @@
       </vspacer>
       <component id="40a76" class="javax.swing.JButton" binding="ändernButton" default-binding="true">
         <constraints>
-          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Ändern"/>
+          <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
+          <icon value="Icons/edit.png"/>
+          <rolloverIcon value="Icons/editRoll2.png"/>
+          <text value=""/>
+          <toolTipText value="Edit"/>
         </properties>
       </component>
       <component id="1dcc4" class="javax.swing.JButton" binding="löschenButton" default-binding="true">
         <constraints>
-          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Löschen"/>
+          <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
+          <icon value="Icons/garbage.png"/>
+          <rolloverIcon value="Icons/garbageRoll2.png"/>
+          <text value=""/>
+          <toolTipText value="Delete"/>
         </properties>
       </component>
       <component id="294c7" class="javax.swing.JButton" binding="abbrechenButton" default-binding="true">
         <constraints>
-          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Abbrechen"/>
+          <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
+          <icon value="Icons/cancel.png"/>
+          <rolloverIcon value="Icons/cancelRoll.png"/>
+          <text value=""/>
+          <toolTipText value="Cancel"/>
         </properties>
       </component>
       <scrollpane id="99fd6">
@@ -59,7 +76,9 @@
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-3552823"/>
+        </properties>
       </component>
     </children>
   </grid>

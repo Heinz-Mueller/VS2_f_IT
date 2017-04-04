@@ -172,6 +172,4 @@ public class Tafel extends JDialog
         childrenTextArea.append(str);
         childrenTextArea.setCaretPosition(childrenTextArea.getText().length() - 1);
     }
-
-
 }
