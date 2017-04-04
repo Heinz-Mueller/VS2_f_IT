@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class Tafel extends JDialog
 {
-    JFrame frame = new JFrame("Tafel");
+    static JFrame frame = new JFrame("Tafel");
     private JTextArea nachrichtenArea;
     private JPanel tafelPanel;
     private JButton sendenButton;
@@ -37,17 +37,6 @@ public class Tafel extends JDialog
     public Tafel()
     {
        erstellen();
-
-//        messageBearbeitenButton.addMouseListener(new MouseAdapter()
-//        {
-//            @Override
-//            public void mouseClicked(MouseEvent e)
-//            {
-//                Bearbeitung bearbeitung = new Bearbeitung();
-//            }
-//        });
-
-
 
     }
 
@@ -95,20 +84,26 @@ public class Tafel extends JDialog
         JFrame eingabe = new JFrame();
         String messageID = JOptionPane.showInputDialog(eingabe, "Bitte Nachricht-ID eingeben.", "Delete", JOptionPane.PLAIN_MESSAGE);
 
-        if (!test.delete( messageID))
-        {
-            JOptionPane.showMessageDialog(null, "Nachricht konnte nicht geloescht werden!", "Delete", JOptionPane.INFORMATION_MESSAGE);
+        if (messageID == null){
+            eingabe.dispose();
+        }else{
+            if ( !test.delete( messageID) )
+            {
+                JOptionPane.showMessageDialog(null, "Nachricht konnte nicht geloescht werden!", "Delete", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else
+                JOptionPane.showMessageDialog(null, "Nachricht geloescht!", "Delete", JOptionPane.INFORMATION_MESSAGE);
         }
-        else
-            JOptionPane.showMessageDialog(null, "Nachricht geloescht!", "Delete", JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     public void onRefresh()
     {
+        nachrichtenArea.setText("");
         ArrayList<MessageData> nachrichten = test.ausgabeNachrichten();
         for (int y = 0; y < nachrichten.size(); y++) {
-            nachrichtenArea.append("TEXT:" + nachrichten.get(y).text + " -BNAME:" + nachrichten.get(y).uName
-                    + " -UID:" + nachrichten.get(y).uid + " -ID:" + nachrichten.get(y).id);
+            nachrichtenArea.append("TEXT:  " + nachrichten.get(y).text + " BNAME:  " + nachrichten.get(y).uName
+                    + " UID:  " + nachrichten.get(y).uid + " ID:  " + nachrichten.get(y).id);
             nachrichtenArea.append("\n");
         }
         nachrichtenArea.append("\n");
@@ -126,6 +121,7 @@ public class Tafel extends JDialog
     private void onBearbeiten()
     {
         Bearbeitung bearbeitung = new Bearbeitung();
+        //frame.setEnabled(false);
     }
 
     public void knotenInfos()

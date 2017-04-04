@@ -141,14 +141,21 @@ public class cDialog
 
     public boolean delete(String messageID)
     {
-        testClient.deleteMessage(messageID);
-        return true;
+        if ( testClient.deleteMessage(messageID) )
+        {
+            return true;
+        }else
+            return false;
+
     }
 
     public boolean nachrichtAendern(String nachricht, String nachrichtID)
     {
-        testClient.setMessage(nachricht, nachrichtID);
-        return true;
+        if ( testClient.setMessage(nachricht, nachrichtID) )
+        {
+            return true;
+        }else
+            return false;
     }
 
     public boolean userCheck(String user, String pw)
@@ -232,12 +239,12 @@ public class cDialog
 
         Scanner scanMain = new Scanner(System.in);
 
-       dialog.clientTest = new StartClient(loginInfo,userArray.get(userPos));
+       //dialog.clientTest = new StartClient(loginInfo,userArray.get(userPos));
 
         int i;
         boolean beenden = false;
 
-       while (!beenden) {
+       /*while (!beenden) {
            System.out.println("\n Was moechten Sie machen?" + "\nBeenden: 0 " + "\nNachricht schreiben: 1"
                    + "\nNachricht loeschen: 2" + "\nNachricht ersetzen: 3" + "\nNachricht Ausgabe: 4"
                    + "\nServer wechseln: 5 (automatisch): " + "\nGebe Vater und kinder Infos: 6" +
@@ -382,7 +389,7 @@ public class cDialog
                    break;
 
            }
-       }
+       }*/
     }
 
 

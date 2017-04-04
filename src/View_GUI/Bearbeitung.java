@@ -1,7 +1,6 @@
 package View_GUI;
 
 
-
 import VS2.MessageData;
 import VS2.UserData;
 import client.cDialog;
@@ -25,6 +24,7 @@ public class Bearbeitung extends JDialog
 
     JFrame frame = new JFrame("Bearbeitung");
 
+
     cDialog test = new cDialog();
 
     //Lade Nachrichten in ArrayListe und dann in die comboBox
@@ -32,7 +32,12 @@ public class Bearbeitung extends JDialog
 
     public Bearbeitung()
     {
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        /*Deaktiviere das Tafel-Fenster*/
+        Tafel.frame.setEnabled(false);
+
         erstellen();
+
 
         abbrechenButton.addActionListener(new ActionListener()
         {
@@ -42,12 +47,6 @@ public class Bearbeitung extends JDialog
             }
         });
 
-//        comboBox1.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//            }
-//        });
 
         ändernButton.addActionListener(new ActionListener() {
             @Override
@@ -69,19 +68,21 @@ public class Bearbeitung extends JDialog
         frame.pack();
         frame.setSize(700, 500);
         frame.setVisible(true);
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Tafel.frame.setEnabled(true);
+            }
+            public void windowClosed(WindowEvent e) {
+                Tafel.frame.setEnabled(true);
+            }
+        });
     }
 
 
     private void nachrichtenLaden()
     {
-//        ArrayList<UserData> userArray=new ArrayList<UserData>();
-//
-//        UserData user1=new UserData(1001,"Salva","pw",true);
-//        UserData user2=new UserData(1002,"Patzek","pw",false);
-//
-//        userArray.add(user1);
-//        userArray.add(user2);
-
         comboBox1.removeAllItems();
 
         for (int i = 0; i < nachrichten.size(); i++)
@@ -106,6 +107,7 @@ public class Bearbeitung extends JDialog
     private void onAbbrechen()
     {
         frame.dispose();
+        Tafel.frame.setEnabled(true);
     }
 
     private void onAendern()
