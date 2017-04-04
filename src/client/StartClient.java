@@ -63,7 +63,7 @@ public class StartClient {
 			
 		} catch (Exception e) {
 			System.out.println("ERROR Server nicht Erreichbar ");
-			System.exit(0);
+			//System.exit(0);
 			return false;
 		}
 	}
@@ -173,7 +173,7 @@ public class StartClient {
 			this.db.writeEintrag(messageID,this.userData.userID,this.userData.userName,this.userData.password, this.loginInfo.server.ip, this.userData.isAdmin, false, newmessage ,Fkt.ERSETZTEN);
 			
 			System.out.println("Server nicht Erreichbar ");
-			System.exit(0);
+			//System.exit(0);
 			return false;
 		}
 	}
@@ -205,7 +205,7 @@ public class StartClient {
 			this.db.writeEintrag(messageID,this.userData.userID,this.userData.userName,this.userData.password, this.loginInfo.server.ip, this.userData.isAdmin, false, "xxx" ,Fkt.LOESCHEN);
 			
 			System.out.println("Server nicht Erreichbar ");
-			System.exit(0);
+			//System.exit(0);
 			return false;
 		}
 	}
@@ -231,7 +231,7 @@ public class StartClient {
 			this.db.writeEintrag("xxx",this.userData.userID,this.userData.userName,this.userData.password, this.loginInfo.server.ip, this.userData.isAdmin, false, message,Fkt.SCHREIBEN);
 			
 			System.out.println("ERROR Server nicht Erreichbar ");
-			System.exit(0);
+			//System.exit(0);
 			return false;
 		}
 	}
