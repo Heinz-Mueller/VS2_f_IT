@@ -1,16 +1,14 @@
 package View_GUI;
 
-import VS2.UserData;
 import client.cDialog;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 /**
- * Created by Fuse on 25.01.2017.
+ * Created by heinz on 25.01.2017.
  */
 public class Login extends javax.swing.JFrame
 {
@@ -25,8 +23,6 @@ public class Login extends javax.swing.JFrame
     public String user;
     public String pw;
 
-
-    //public int port = 0;
 
     public cDialog dialog = new cDialog();
 
@@ -70,8 +66,6 @@ public class Login extends javax.swing.JFrame
         northPanel.add(m_errorLabel, BorderLayout.SOUTH);
 
 
-        //String localhost = dialog.serDaten_localhost.ip;
-        //System.out.println(localhost);
         final JComboBox verfServer = new JComboBox();
         verfServer.addItem("IP: " + dialog.serDaten_localhost.ip + " Port: " + dialog.serDaten_localhost.port);
         verfServer.addItem("IP: " + dialog.serDaten1.ip + " Port: " + dialog.serDaten1.port);
@@ -81,13 +75,15 @@ public class Login extends javax.swing.JFrame
 
 
         m_setButton = new JButton ("Login");
-        //Aktionen für Login-Button
+
+        /* Aktionen für Login-Button */
         m_setButton.addActionListener (new ActionListener(){
             public void actionPerformed (ActionEvent e)
             {
                 user = userTextFeld.getText();
                 pw = pwTextFeld.getText().trim();
 
+                /*Wenn User mit pw vorhanden, starte Client */
                 if( dialog.userCheck(user, pw) )
                 {
 
@@ -124,10 +120,4 @@ public class Login extends javax.swing.JFrame
         }
     }
 
-
-/*    public static void main(String args[])
-    {
-        Login start = new Login();
-        start.sichtbar(true);
-    }*/
 }

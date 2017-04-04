@@ -5,10 +5,10 @@ import VS2.LoginInformation;
 import VS2.MessageData;
 import VS2.UserData;
 import View_GUI.Login;
-import View_GUI.Tafel;
+
 
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 /**
  * Created by heinz on 26.03.17.
@@ -17,25 +17,11 @@ public class cDialog
 {
     private static StartClient testClient;
 
-    String benutzterName = null;
-    String passWord = null;
-    String dbIP = null;
-    int dbPORT = 0;
-
-    boolean serverConnect = false;
-    boolean shutdown = false;
-
-    LoginInformation logininfo = null;
-    UserData userDATA = null;
-    RegisterLogin dbLogin;
-    StartClient clientTest;
-
-    Scanner scan;
 
     //Array-Liste für die User
     public static ArrayList<UserData> userArray=new ArrayList<UserData>();
 
-    //Server und Port fest eingetragen
+    ///////////Hier Server und Port fest eingetragen ////////////////////////
     public static ConnectInformationData serDaten_localhost = new ConnectInformationData("127.0.0.1",6000);
     public static ConnectInformationData serDaten1 = new ConnectInformationData("192.168.178.52",6000);
     public static ConnectInformationData serDaten2 = new ConnectInformationData("192.168.0.105",6000);
@@ -43,82 +29,7 @@ public class cDialog
 
     static int userNr = 0;
 
-    private boolean connDatenB() {
-        // Login Daten eigben
-        System.out.println("Datenb Daten eigben \n" + "IP: ");
-        scan = new Scanner(System.in);
-        dbIP = scan.nextLine();
-
-        System.out.println("Port: ");
-        scan = new Scanner(System.in);
-        dbPORT = scan.nextInt();
-
-        // Login klasse starten
-        dbLogin = new RegisterLogin(dbPORT, dbIP);
-        // login Datenbank verbinden
-        if (!dbLogin.connectLoginServer()) {
-            serverConnect = false;
-            return false;
-
-        }
-        serverConnect = true;
-        return true;
-
-    }
-
-    private boolean loginDB() {
-        System.out.println("Bitte Login Daten eingben:\n" + "Benutzer: ");
-        scan = new Scanner(System.in);
-        benutzterName = scan.nextLine();
-
-        System.out.println("Password: ");
-        scan = new Scanner(System.in);
-        passWord = scan.nextLine();
-        userDATA = new UserData();
-        userDATA.userID = 0;
-        userDATA.userName = benutzterName;
-        userDATA.password = passWord;
-        this.logininfo = dbLogin.login(this.userDATA);
-
-        if (!benutzterName.isEmpty() && !passWord.isEmpty()) {
-
-            if (logininfo != null && this.serverConnect) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-    }
-
-    private boolean registerDB() {
-        System.out.println("Bitte Login Daten eingben:\n" + "Benutzer: ");
-        scan = new Scanner(System.in);
-        benutzterName = scan.nextLine();
-
-        System.out.println("Password: ");
-        scan = new Scanner(System.in);
-        passWord = scan.nextLine();
-        userDATA = new UserData();
-        userDATA.userID = 0;
-        userDATA.userName = benutzterName;
-        userDATA.password = passWord;
-        // was macht regData
-        String regData = "TEST";
-        if (!benutzterName.isEmpty() && !passWord.isEmpty()) {
-            if (dbLogin.register(this.userDATA, regData) && this.serverConnect) {
-                this.logininfo = dbLogin.login(this.userDATA);
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
+    /*Zieht und schreibt alle Nachrichten in Liste*/
     public ArrayList<MessageData> ausgabeNachrichten()
     {
         ArrayList<MessageData> messageListtest = new ArrayList<MessageData>();
@@ -126,19 +37,20 @@ public class cDialog
         return messageListtest;
     }
 
-
+    /*Schreibt eine Nachricht*/
     public void nachrichtSchreiben(String nachricht)
     {
         testClient.schreibeMessage(nachricht);
     }
 
-
+    /*Liefert Informationen*/
     public StartClient infos()
     {
         StartClient infos = testClient;
         return infos;
     }
 
+    /*Löscht eine Nachricht*/
     public boolean delete(String messageID)
     {
         if ( testClient.deleteMessage(messageID) )
@@ -149,6 +61,7 @@ public class cDialog
 
     }
 
+    /*Ändert eine Nachricht durch neue Nachricht*/
     public boolean nachrichtAendern(String nachricht, String nachrichtID)
     {
         if ( testClient.setMessage(nachricht, nachrichtID) )
@@ -158,6 +71,7 @@ public class cDialog
             return false;
     }
 
+    /*Prüft ob User mit diesem Password verhanden ist*/
     public boolean userCheck(String user, String pw)
     {
         for(int j = 0; j< userArray.size(); ++j)
@@ -171,7 +85,7 @@ public class cDialog
         return false;
     }
 
-
+    /*Startet Client nach Serverwahl*/
     public void startClient(String user, int serverNr)
     {
         LoginInformation loginInfos = null;
@@ -183,7 +97,6 @@ public class cDialog
         }else if(serverNr == 2){
             loginInfos = new LoginInformation (userArray.get(userNr).isAdmin, serDaten2);
         }
-
         testClient = new StartClient(loginInfos, userArray.get(userNr));
     }
 
@@ -191,9 +104,6 @@ public class cDialog
    public static void main(String args[])
    {
         ArrayList<MessageData> messageListtest = new ArrayList<MessageData>();
-
-       //Daten fuer Loginserver zu ersetzten
-        //ArrayList<UserData> userArray=new ArrayList<UserData>();
 
        //User anlegen und in Array Liste packen
        UserData user1 = new UserData(1001,"Salva","pw",true);

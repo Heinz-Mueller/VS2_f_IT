@@ -2,17 +2,16 @@ package View_GUI;
 
 import VS2.MessageData;
 import client.*;
-import client.RegisterLogin;
+
 import client.StartClient;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 import java.util.ArrayList;
 
 /**
- * Created by E.E on 10.01.2017.
+ * Created by heinz on 10.01.2017.
  */
 public class Tafel extends JDialog
 {
@@ -31,7 +30,6 @@ public class Tafel extends JDialog
     private JButton deleteButton;
     private JLabel info;
 
-    //private cDialog a;
 
     cDialog test = new cDialog();
 
@@ -80,6 +78,7 @@ public class Tafel extends JDialog
         });
     }
 
+    /*Eingabe für message-ID und dann löschen der Nachricht*/
     private void onDelete()
     {
         info.setText("");
@@ -106,8 +105,8 @@ public class Tafel extends JDialog
         nachrichtenArea.setText("");
         ArrayList<MessageData> nachrichten = test.ausgabeNachrichten();
         for (int y = 0; y < nachrichten.size(); y++) {
-            nachrichtenArea.append("TEXT:  " + nachrichten.get(y).text + " BNAME:  " + nachrichten.get(y).uName
-                    + " UID:  " + nachrichten.get(y).uid + " ID:  " + nachrichten.get(y).id);
+            nachrichtenArea.append("TEXT: " + nachrichten.get(y).text
+                    + "   UID: " + nachrichten.get(y).uid + "   ID: " + nachrichten.get(y).id);
             nachrichtenArea.append("\n");
         }
         info.setText("");
@@ -133,7 +132,6 @@ public class Tafel extends JDialog
     {
         Bearbeitung bearbeitung = new Bearbeitung();
         info.setText("");
-        //frame.setEnabled(false);
     }
 
     public void knotenInfos()
@@ -157,12 +155,10 @@ public class Tafel extends JDialog
 
     public void erstellen()
     {
-        //JFrame frame = new JFrame("Tafel");
         frame.setContentPane(tafelPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(1000, 600);
-        //frame.setVisible(true);
         knotenInfos();
         onRefresh();
     }

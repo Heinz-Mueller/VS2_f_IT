@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VS2_CORBA_GUI:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/VS2_CORBA_GUI_jar</output-path>
+    <root id="archive" name="VS2_f_IT.jar">
+      <element id="module-output" name="VS2_f_IT" />
+    </root>
+  </artifact>
+</component>
